@@ -1,0 +1,15 @@
+{
+  "name": "Ziggy Stardus",
+  "address": {
+    "street": "Eagle Way",
+    "number": "1978",
+    "city": "Austin",
+    "state": "TX",
+    "zip": "78704"
+  }
+  "besties": [
+  "Spiders from Mars",
+  "Will",
+  "Gilly"
+  ]
+}
