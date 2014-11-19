@@ -5,9 +5,11 @@ var flatten = function(array) {
     var new_array = [];
 
     for (var i = array.length - 1; i >= 0; i--) {
-        if (array[i] instanceOf Array) {
-            for (var i = array[i].length - 1; i >= 0; i--) {
-                new_array.push(array[i][i]);
+        if (array[i] instanceof Array) {
+            var subArray = array[i];
+
+            for (var j = subArray.length - 1; j >= 0; j--) {
+                new_array.push(subArray[j]);
             };
         }
         else {
@@ -15,6 +17,8 @@ var flatten = function(array) {
         };
     };
     return new_array;
-}
+};
 
-console.log(flatten(array1));
+
+console.log(flatten(array1).reverse());
+console.log(flatten(array2).reverse());
