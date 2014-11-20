@@ -1,0 +1,118 @@
+<html>
+<head>
+  <title>jQuery Selectors</title>
+  <style type="text/css">
+    .item {
+      padding: 8px;
+      width: 200px;
+      background: #ccc;
+    }
+    .item.active {
+      background: #cfc;
+    }
+  </style>
+</head>
+<body>
+
+<form class="new-item">
+  <label>Pre-Filled Name Input: </label><input class="name" type="text" value="Mitch Thomson" />
+  <br />
+  <label>Pre-Filled Price Input: </label>
+  <input type="text" class="price" value="Mitch is $19">
+  <br />
+  <input class="submit" type="submit" value="SUBMIT!"></input>
+</form>
+
+<div id="items">
+  <div class="item">
+    <label>Item One</label>
+    <div class="price">$11</div>
+  </div>
+
+  <div class="item active">
+    <label>Item Two</label>
+    <div class="price">$22</div>
+  </div>
+
+  <div class="item">
+    <label>Item Three</label>
+    <div class="price">$33</div>
+  </div>
+</div>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+
+// TODO
+$.get("http://critics.api.mks.io/restaurants", function (reviews) {
+  console.log("Restaurant reviews:", reviews)
+
+    var reviewers = []
+    reviews.forEach(function(r) {
+    if (reviewers.indexOf(r.reviewer) == -1) {
+      reviewers.push(r.reviewer)
+    }
+  })
+    console.log("All reviewers:", reviewers)
+
+    var terse = reviews.filter(function(r) {
+      return r.comment.length < 30
+    })
+    console.log("Terse reviews:", terse)
+
+    var ratings = reviews.filter(function(r) {
+      return r.rating > 8;
+    });
+    console.log("Greater > 8", ratings.sort());
+
+    var inAustin = reviews.filter(function(r) {
+      return r.venue.match(/austin/i);
+    })
+    console.log("In Austin", inAustin);
+});
+
+$.get("http://critics.api.mks.io/movie-genres", function (reviews) {
+  console.log("Movie genre reviews:", reviews)
+
+  var mostReviews = {};
+  reviews.forEach(function(r) {
+    mostReviews[r.genre] || (mostReviews[r.genre] = 0)
+      mostReviews[r.genre] += 1;
+  });
+
+  var sortThis = [];
+
+  for (var genre in mostReviews) {
+    sortThis.push([genre, mostReviews[genre]]);
+  }
+  sortThis.sort(function(a, b) {return a[1] - b[1]}).reverse()
+
+  console.log("Top Movie Genres ")
+  for (var i = 0; i < 3; i++ ) {
+   console.log(sortThis[i][0] + " - " + sortThis[i][1])
+  };
+
+  console.log("Sort this", sortThis)
+  console.log("Most reviews", mostReviews);
+
+  var sum = sortThis.reduce(function(a, b){
+    console.log("sum", a[1] + b[1])
+    return a[1] + b[1];
+  });
+
+// nums = [1, 2, 3, 4, 5]
+
+// var sum = nums.reduce(function(a, b) {
+//   return a + b;
+// })
+console.log(sum)
+
+});
+
+
+
+</script>
+
+</body>
+</html>
