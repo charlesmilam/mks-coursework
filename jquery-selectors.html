@@ -46,7 +46,7 @@
 
 // TODO
 $.get("http://critics.api.mks.io/restaurants", function (reviews) {
-  console.log("Restaurant reviews:", reviews)
+  //console.log("Restaurant reviews:", reviews)
 
     var reviewers = []
     reviews.forEach(function(r) {
@@ -54,22 +54,22 @@ $.get("http://critics.api.mks.io/restaurants", function (reviews) {
       reviewers.push(r.reviewer)
     }
   })
-    console.log("All reviewers:", reviewers)
+    //console.log("All reviewers:", reviewers)
 
     var terse = reviews.filter(function(r) {
       return r.comment.length < 30
     })
-    console.log("Terse reviews:", terse)
+    //console.log("Terse reviews:", terse)
 
     var ratings = reviews.filter(function(r) {
       return r.rating > 8;
     });
-    console.log("Greater > 8", ratings.sort());
+    //console.log("Greater > 8", ratings.sort());
 
     var inAustin = reviews.filter(function(r) {
       return r.venue.match(/austin/i);
     })
-    console.log("In Austin", inAustin);
+    //console.log("In Austin", inAustin);
 });
 
 $.get("http://critics.api.mks.io/movie-genres", function (reviews) {
@@ -88,25 +88,46 @@ $.get("http://critics.api.mks.io/movie-genres", function (reviews) {
   }
   sortThis.sort(function(a, b) {return a[1] - b[1]}).reverse()
 
-  console.log("Top Movie Genres ")
+  //console.log("Top Movie Genres ")
   for (var i = 0; i < 3; i++ ) {
-   console.log(sortThis[i][0] + " - " + sortThis[i][1])
+   //console.log(sortThis[i][0] + " - " + sortThis[i][1])
   };
 
-  console.log("Sort this", sortThis)
+  //console.log("Sort this", sortThis)
   console.log("Most reviews", mostReviews);
 
-  var sum = sortThis.reduce(function(a, b){
-    console.log("sum", a[1] + b[1])
-    return a[1] + b[1];
-  });
+  var ratings = []
+  var summed = []
+  var averages = {}
+
+  for (var rating_genre in mostReviews) {
+   reviews.forEach(function(r) {
+      if (rating_genre === r.genre) {
+        ratings.push(r.rating)
+
+      }
+      summed = ratings.reduce(function(a, b) {
+        return parseFloat(a) + parseFloat(b)
+      })
+
+     //console.log ("average", avg / mostReviews[rating_genre])
+     final_avg = summed / mostReviews[rating_genre]
+    });
+    averages[rating_genre] = final_avg
+    console.log("the averages", averages)
+  }
+
+  // var sum = sortThis.reduce(function(a, b){
+  //   console.log("sum", a[1] + b[1])
+  //   return a[1] + b[1];
+  // });
 
 // nums = [1, 2, 3, 4, 5]
 
 // var sum = nums.reduce(function(a, b) {
 //   return a + b;
 // })
-console.log(sum)
+//console.log(sum)
 
 });
 
