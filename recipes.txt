@@ -20,3 +20,9 @@ serves 2
 1 avocado
 1 soup
 cookies
+
+bean burrito
+serves 1
+1 large tortilla
+beans
+cheese
