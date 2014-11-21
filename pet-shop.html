@@ -1,0 +1,126 @@
+<html>
+<head>
+  <title>Pet Shop World</title>
+</head>
+<body>
+
+<select class="pet-shops">
+  <option>-- Please Select a Pet Shop --</option>
+</select>
+
+<div class="pet-shop">
+  <h3 class="title">Please select a Pet Shop above</h3>
+
+  <div class="cats"></div>
+  <div class="dogs"></div>
+
+  <form class="new-cat"></form>
+  <form class="new-dog"></form>
+</div>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+var host = "http://pet-shop.api.mks.io"
+// vm stands for view-model. This is the current state of our user interface
+var vm = {
+  shops: [],
+  cats: [],
+  dogs: []
+}
+
+// Reusable utility function
+var findById = function (array, id) {
+  for (var i=0; i < array.length; i++) {
+    var obj = array[i]
+    if (obj.id === id) return obj
+  }
+  return null
+}
+
+// Get all pet shops on page load
+$.get(host + '/shops', function (shops) {
+  vm.shops = shops
+  console.log("Got shops:", shops)
+
+  var $select = $('select.pet-shops')
+  shops.forEach(function(shop) {
+    var $option = $('<option>').text(shop.name).attr('value', shop.id)
+    $select.append($option)
+  })
+})
+
+var activeShop = null
+$('select.pet-shops').on('change', function (e) {
+  var shopId = parseInt( $(this).val() )
+  activeShop = findById(vm.shops, shopId)
+
+  $('.pet-shop h3.title').text(activeShop.name)
+
+  // TODO: MAKE GET REQUEST TO GET CATS AND THEN CALL renderCats
+
+  // TODO: MAKE GET REQUEST TO GET DOGS AND THEN CALL renderDogs
+  $.get(host + '/shops/' + shopId + '/dogs', function (dogs) {
+    renderDogs(dogs)
+  })
+
+  //console.log("vm dogs", vm.dogs)
+  
+  
+})
+
+var renderCats = function (cats) {
+  // TODO
+}
+
+var renderDogs = function (dogs) {
+  // TODO
+  // <div class="pet dog">
+  //   <div class="name">Lazy Eater (happiness: 5)</div>
+  //   <img src="http://i.imgur.com/vCuyjsS.gif" />
+  //   <div class="adopted-status">
+  //     Adopted - No :(
+  //     <a class="adopt" href="#">Adopt this Pet</a>
+  //   </div>
+  // </div>
+  
+  // {shopId: 14, name: "Rin Tin Tin", imageUrl: "http://2.bp.blogspot.com/-Ue6CuFoI77A/ToNz5n_-4dI/…U/54wt79iQp4g/s1600/1925-rin-tin-tin_1582023i.jpg", happiness: "5", id: 21}
+  
+  $('.dogs').html('')
+  var $dogs = $("div.dogs")
+  var $dogsHdr = $("<h2>").text("Dogs")
+  $dogs.append($dogsHdr)
+  
+  dogs.forEach(function(dog) { 
+    var $petDog = $("<div>").addClass("pet-dog")
+    
+    var $dogName = $("<div>").addClass("name")
+    $dogName.text(dog.name + " (happiness: " + dog.happiness + ")")
+    
+    var $dogImg = $("<img />") 
+    $dogImg.attr('src', dog.imageUrl)
+
+    var $dogAdopt = $("<div>").addClass("adopted-status") 
+    var $adoptUrl = $("<a>")
+    $adoptUrl.attr("href", "#")
+    $adoptUrl.text("Adopt here")
+    $dogAdopt.text("Adopted - No :-(   ")
+
+
+    
+    $dogs.append($petDog)
+    $petDog.append($dogName)
+    $petDog.append($dogImg)
+    $petDog.append($dogAdopt)
+    $dogAdopt.append($adoptUrl)
+    
+    
+    
+  })
+}
+
+
+</script>
+
+</body>
+</html>
