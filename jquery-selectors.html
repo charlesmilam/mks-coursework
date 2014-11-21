@@ -104,30 +104,19 @@ $.get("http://critics.api.mks.io/movie-genres", function (reviews) {
    reviews.forEach(function(r) {
       if (rating_genre === r.genre) {
         ratings.push(r.rating)
-
       }
+
       summed = ratings.reduce(function(a, b) {
         return parseFloat(a) + parseFloat(b)
       })
-
-     //console.log ("average", avg / mostReviews[rating_genre])
+      console.log("summed", summed)
      final_avg = summed / mostReviews[rating_genre]
     });
     averages[rating_genre] = final_avg
+    ratings = [0]
+    summed = 0
     console.log("the averages", averages)
   }
-
-  // var sum = sortThis.reduce(function(a, b){
-  //   console.log("sum", a[1] + b[1])
-  //   return a[1] + b[1];
-  // });
-
-// nums = [1, 2, 3, 4, 5]
-
-// var sum = nums.reduce(function(a, b) {
-//   return a + b;
-// })
-//console.log(sum)
 
 });
 
