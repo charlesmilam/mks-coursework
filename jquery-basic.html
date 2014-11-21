@@ -140,7 +140,7 @@
 
   var ratings = []
   var summed = []
-  var averages = {}
+  var averages = []
   var genreAvg = []
 
   for (var rating_genre in mostReviews) {
@@ -158,9 +158,9 @@
       
       
     });
-    genreAvg.push(final_avg, divisor)
+    genreAvg.push(rating_genre, final_avg, divisor)
     console.log("genre avg", genreAvg)
-    averages[rating_genre] = genreAvg
+    averages.push(genreAvg)
     ratings = [0]
     genreAvg = []
     summed = 0
@@ -170,11 +170,11 @@
   var renderFaveGenres = function(genres) {
     console.log("genres", genres)
     var ul = $('ul.genres')
-    for (var genre in genres) {
-      console.log("render genre", genre)
+    for (var i = 0; i < genres.length - 1; i++) {
+      //console.log("render genre", genre)
       var li = $('<li>')
       var str = $("<strong>")
-      li.text(genre + ": " + genre + " " + genre)
+      li.text(genres[i][0] + ":    " + genres[i][1] + "    " + genres[i][2] + " reviews")
       ul.append(li)
     }
   }
@@ -235,7 +235,6 @@
       })
 }) // end of the cheese
 
-    
 
 </script>
 
