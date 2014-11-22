@@ -58,19 +58,47 @@ $('select.pet-shops').on('change', function (e) {
   $('.pet-shop h3.title').text(activeShop.name)
 
   // TODO: MAKE GET REQUEST TO GET CATS AND THEN CALL renderCats
+  $.get(host + '/shops/' + shopId + '/cats', function (cats) {
+    renderCats(cats)
+  })
 
   // TODO: MAKE GET REQUEST TO GET DOGS AND THEN CALL renderDogs
   $.get(host + '/shops/' + shopId + '/dogs', function (dogs) {
     renderDogs(dogs)
   })
-
-  //console.log("vm dogs", vm.dogs)
   
   
 })
 
 var renderCats = function (cats) {
   // TODO
+  $('.cats').html('')
+  var $cats = $("div.cats")
+  var $catsHdr = $("<h2>").text("Cats")
+  $cats.append($catsHdr)
+  
+  cats.forEach(function(cats) { 
+    var $petCat = $("<div>").addClass("pet-cat")
+    
+    var $catName = $("<div>").addClass("name")
+    $catName.text(cats.name + " (happiness: " + cats.happiness + ")")
+    
+    var $catImg = $("<img />") 
+    $catImg.attr('src', cats.imageUrl)
+
+    var $catAdopt = $("<div>").addClass("adopted-status") 
+    var $adoptUrl = $("<a>")
+    $adoptUrl.attr("href", "#")
+    $adoptUrl.text("Adopt here")
+    $catAdopt.text("Adopted - No :-(   ")
+
+    $cats.append($petCat)
+    $petCat.append($catName)
+    $petCat.append($catImg)
+    $petCat.append($catAdopt)
+    $catAdopt.append($adoptUrl)
+    
+  })
 }
 
 var renderDogs = function (dogs) {
@@ -106,15 +134,11 @@ var renderDogs = function (dogs) {
     $adoptUrl.text("Adopt here")
     $dogAdopt.text("Adopted - No :-(   ")
 
-
-    
     $dogs.append($petDog)
     $petDog.append($dogName)
     $petDog.append($dogImg)
     $petDog.append($dogAdopt)
     $dogAdopt.append($adoptUrl)
-    
-    
     
   })
 }
