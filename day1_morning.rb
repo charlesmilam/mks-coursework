@@ -111,6 +111,8 @@ fave_meals << fave_meal("harsh", ["garlic knots", "spaghetti & eggplant", "chees
 p fave_meals
 fave_meals.each do |meal| 
   p "#{meal[:name].capitalize}'s' appetizer: #{meal[:meal][:app]}"
+  p "#{meal[:name].capitalize}'s' entree: #{meal[:meal][:entree]}"
+  p "#{meal[:name].capitalize}'s' dessert: #{meal[:meal][:dessert]}"
 end
 
 
