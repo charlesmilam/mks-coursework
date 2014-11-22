@@ -109,6 +109,10 @@ fave_meals << fave_meal("kate", ["calzone", "slice of pizza", "cannoli"])
 fave_meals << fave_meal("harsh", ["garlic knots", "spaghetti & eggplant", "cheesecake"])
 
 p fave_meals
+fave_meals.each do |meal| 
+  p "#{meal[:name].capitalize}'s' appetizer: #{meal[:meal][:app]}"
+end
+
 
 # ------------------------------- restaurant -----------------------------------------------
 class Restaurant
