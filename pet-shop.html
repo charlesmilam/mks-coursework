@@ -21,6 +21,7 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript">
+$(document).ready (function() {
 var host = "http://pet-shop.api.mks.io"
 // vm stands for view-model. This is the current state of our user interface
 var vm = {
@@ -41,7 +42,6 @@ var findById = function (array, id) {
 // Get all pet shops on page load
 $.get(host + '/shops', function (shops) {
   vm.shops = shops
-  console.log("Got shops:", shops)
 
   var $select = $('select.pet-shops')
   shops.forEach(function(shop) {
@@ -54,20 +54,67 @@ var activeShop = null
 $('select.pet-shops').on('change', function (e) {
   var shopId = parseInt( $(this).val() )
   activeShop = findById(vm.shops, shopId)
-
+  
   $('.pet-shop h3.title').text(activeShop.name)
 
   // TODO: MAKE GET REQUEST TO GET CATS AND THEN CALL renderCats
   $.get(host + '/shops/' + shopId + '/cats', function (cats) {
+    vm.cats = cats
     renderCats(cats)
   })
 
   // TODO: MAKE GET REQUEST TO GET DOGS AND THEN CALL renderDogs
   $.get(host + '/shops/' + shopId + '/dogs', function (dogs) {
+    vm.dogs = dogs
     renderDogs(dogs)
   })
   
   
+})
+
+$(document).on("click", "a", function (e) {
+  e.preventDefault()
+  console.log("in click")
+
+  species = $(this)[0].parentNode.parentNode.className
+  adopted = "div." + $(this)[0].parentNode.className 
+  console.log("parent", adopted)
+  petId = parseInt($(this)[0].id)
+  if (species === "cat") {
+    vm = vm.cats
+    species = "cats"
+  }
+  else {
+    vm = vm.dogs
+    species = "dogs"
+  }
+  activePet = findById(vm, petId)
+  console.log("active pet", activePet.id)
+  shopId = activePet.shopId
+  $.ajax({
+    url: host + '/shops/' + shopId + '/' + species + '/' + petId,
+    type: 'PUT',
+    data: {adopted: true},
+    dataType: "html",
+    success: function (data) {
+       // console.log("put data", data)
+       // console.log("new adopted", $.parseJSON(data["adopted"]))
+       // newAdopted = toString($.parseJSON(data["adopted"]))
+       //ele = $(this)[0].id
+       //console.log("ele", ele)
+       //parent = $(this)[0].parentNode.className 
+       console.log("data adopted", data)
+       console.log("txt parent", $(this).parent().text())
+       //$(adopted).text(data["adopted"])
+       $(this).parent().text(data["adopted"])
+       //$(this).parent().load(data["adopted"])
+    }  
+  })
+  
+})
+
+$(document).on("change", $(".adopted-status"), function(e) {
+  $(this).load()
 })
 
 var renderCats = function (cats) {
@@ -77,20 +124,21 @@ var renderCats = function (cats) {
   var $catsHdr = $("<h2>").text("Cats")
   $cats.append($catsHdr)
   
-  cats.forEach(function(cats) { 
-    var $petCat = $("<div>").addClass("pet-cat")
+  cats.forEach(function(cat) { 
+    var $petCat = $("<div>").addClass("cat")
     
     var $catName = $("<div>").addClass("name")
-    $catName.text(cats.name + " (happiness: " + cats.happiness + ")")
+    $catName.text(cat.name + " (happiness: " + cat.happiness + ")")
     
     var $catImg = $("<img />") 
-    $catImg.attr('src', cats.imageUrl)
+    $catImg.attr('src', cat.imageUrl)
 
     var $catAdopt = $("<div>").addClass("adopted-status") 
     var $adoptUrl = $("<a>")
     $adoptUrl.attr("href", "#")
+    $adoptUrl.attr("id", cat.id)
     $adoptUrl.text("Adopt here")
-    $catAdopt.text("Adopted - No :-(   ")
+    $catAdopt.text(cat.adopted)
 
     $cats.append($petCat)
     $petCat.append($catName)
@@ -120,7 +168,7 @@ var renderDogs = function (dogs) {
   $dogs.append($dogsHdr)
   
   dogs.forEach(function(dog) { 
-    var $petDog = $("<div>").addClass("pet-dog")
+    var $petDog = $("<div>").addClass("dog")
     
     var $dogName = $("<div>").addClass("name")
     $dogName.text(dog.name + " (happiness: " + dog.happiness + ")")
@@ -131,8 +179,10 @@ var renderDogs = function (dogs) {
     var $dogAdopt = $("<div>").addClass("adopted-status") 
     var $adoptUrl = $("<a>")
     $adoptUrl.attr("href", "#")
+    $adoptUrl.addClass("adopt")
+    $adoptUrl.attr("id", dog.id)
     $adoptUrl.text("Adopt here")
-    $dogAdopt.text("Adopted - No :-(   ")
+    $dogAdopt.text(dog.adopted)
 
     $dogs.append($petDog)
     $petDog.append($dogName)
@@ -144,6 +194,7 @@ var renderDogs = function (dogs) {
 }
 
 
+})
 </script>
 
 </body>
