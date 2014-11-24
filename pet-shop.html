@@ -68,6 +68,10 @@ $('select.pet-shops').on('change', function (e) {
     vm.dogs = dogs
     renderDogs(dogs)
   })
+
+  // render forms
+  renderNewCat()
+  renderNewDog()
   
   
 })
@@ -80,6 +84,7 @@ $(document).on("click", "a", function (e) {
   adopted = "div." + $(this)[0].parentNode.className 
   console.log("parent", adopted)
   petId = parseInt($(this)[0].id)
+  shopId = $("select.pet-shops").val()
   if (species === "cat") {
     vm = vm.cats
     species = "cats"
@@ -88,9 +93,9 @@ $(document).on("click", "a", function (e) {
     vm = vm.dogs
     species = "dogs"
   }
-  activePet = findById(vm, petId)
-  console.log("active pet", activePet.id)
-  shopId = activePet.shopId
+  //activePet = findById(vm, petId)
+  //console.log("active pet", activePet.id)
+  //shopId = activePet.shopId
   $.ajax({
     url: host + '/shops/' + shopId + '/' + species + '/' + petId,
     type: 'PUT',
@@ -105,17 +110,77 @@ $(document).on("click", "a", function (e) {
        //parent = $(this)[0].parentNode.className 
        console.log("data adopted", data)
        console.log("txt parent", $(this).parent().text())
-       //$(adopted).text(data["adopted"])
-       $(this).parent().text(data["adopted"])
+       // if (species === "cats") {
+       //  renderCats(data)
+       // }
+       // else {
+       //  renderDogs(data)
+       // }
+       $(adopted).text(data["adopted"])
+       //$(this).parent().html(data["adopted"])
        //$(this).parent().load(data["adopted"])
     }  
   })
   
 })
 
-$(document).on("change", $(".adopted-status"), function(e) {
-  $(this).load()
+$(document).on("submit", $(".new-cat"), function(e) {
+  e.preventDefault()
+
+  shopId = $("select.pet-shops").val()
+
+  var $catForm = $( this ),
+    name = $catForm.find( "input[name='newCatName']" ).val(),
+    img = $catForm.find("input[name='newCatImg']").val(),
+    adopted = $catForm.find("input[name='newCatAdopted']").val(),
+    url = "http://pet-shop.api.mks.io/shops/" + shopId + "/cats";
+
+  var posting = $.post( url, { name: name, imageUrl: img, adopted: adopted } )
+
+  posting.done(function( data ) {
+    console.log("cat success", data)
+    alert("New cat sucessfully added.")
+    // var content = $( data ).find( "#content" );
+    // $( "#result" ).empty().append( content );
+  })
+
+  posting.fail(function(data) {
+    console.log("cat error")
+    alert("ERROR: " + data["responseText"])
+  })
+
 })
+
+$(document).on("submit", $(".new-dog"), function(e) {
+  e.preventDefault()
+
+  shopId = $("select.pet-shops").val()
+
+  var $dogForm = $( this ),
+    name = $dogForm.find( "input[name='newDogName']" ).val(),
+    img = $dogForm.find("input[name='newDogImg']").val(),
+    adopted = $dogForm.find("input[name='newDogAdopted']").val(),
+    url = "http://pet-shop.api.mks.io/shops/" + shopId + "/dogs";
+
+  var posting = $.post( url, { name: name, imageUrl: img, adopted: adopted } )
+
+  posting.done(function( data ) {
+    console.log("dog success", data)
+    alert("New dog sucessfully added.")
+    // var content = $( data ).find( "#content" );
+    // $( "#result" ).empty().append( content );
+  })
+
+  posting.fail(function(data) {
+    console.log("dog error")
+    alert("ERROR: " + data["responseText"])
+  })
+
+})
+
+// $(document).on("change", $(".adopted-status"), function(e) {
+//   $(this).load()
+// })
 
 var renderCats = function (cats) {
   // TODO
@@ -191,6 +256,41 @@ var renderDogs = function (dogs) {
     $dogAdopt.append($adoptUrl)
     
   })
+}
+
+var renderNewCat = function () {
+  $(".new-cat").html("")
+  var $newCat = $("form.new-cat")
+  var $newCatHdr = $("h3").text("Add a cat")
+
+  // WHY => doesn't this work
+  // var $newCatName = $("input").type("text")
+  // //$newCatName.attr("type", "text")
+  // $newCatName.attr("name", "newCatName")
+  // //console.log("cat input", $newCatName)
+
+  // var $newCatSubmit = $("input")
+  // $newCatSubmit.attr("type", "Add Cat")
+
+  $newCat.append($newCatHdr)
+  $newCat.append("<input type='text' placeholder='cat name' name='newCatName' /><br>")
+  $newCat.append("<input type='text' placeholder='url for image' name='newCatImg' /><br>")
+  $newCat.append("<input type='text' placeholder='adopted true|false' name='newCatAdopted' /><br>")
+  $newCat.append("<input type='submit' name='newCatSubmit' />")
+  
+}
+
+var renderNewDog = function () {
+  $(".new-dog").html("")
+  var $newDog = $("form.new-dog")
+  var $newDogHdr = $("h3").text("Add a dog")
+
+  $newDog.append($newDogHdr)
+  $newDog.append("<input type='text' placeholder='dog name' name='newDogName' /><br>")
+  $newDog.append("<input type='text' placeholder='url for image' name='newDogImg' /><br>")
+  $newDog.append("<input type='text' placeholder='adopted true|false' name='newDogAdopted' /><br>")
+  $newDog.append("<input type='submit' name='newDogSubmit' />")
+  
 }
 
 
