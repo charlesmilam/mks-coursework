@@ -124,7 +124,7 @@ $(document).on("click", "a", function (e) {
   
 })
 
-$(document).on("submit", $(".new-cat"), function(e) {
+$(document).on("submit", $("form.new-cat"), function(e) {
   e.preventDefault()
 
   shopId = $("select.pet-shops").val()
@@ -151,7 +151,7 @@ $(document).on("submit", $(".new-cat"), function(e) {
 
 })
 
-$(document).on("submit", $(".new-dog"), function(e) {
+$(document).on("submit", $("#add-dog"), function(e) {
   e.preventDefault()
 
   shopId = $("select.pet-shops").val()
@@ -160,13 +160,17 @@ $(document).on("submit", $(".new-dog"), function(e) {
     name = $dogForm.find( "input[name='newDogName']" ).val(),
     img = $dogForm.find("input[name='newDogImg']").val(),
     adopted = $dogForm.find("input[name='newDogAdopted']").val(),
+    happiness = $dogForm.find("input[name='newDogHappiness']").val()
     url = "http://pet-shop.api.mks.io/shops/" + shopId + "/dogs";
 
-  var posting = $.post( url, { name: name, imageUrl: img, adopted: adopted } )
+  var posting = $.post( url, { name: name, imageUrl: img, happiness: happiness, adopted: adopted } )
 
   posting.done(function( data ) {
     console.log("dog success", data)
     alert("New dog sucessfully added.")
+    $("#dogForm").each(function(){
+      this.reset();
+    })
     // var content = $( data ).find( "#content" );
     // $( "#result" ).empty().append( content );
   })
@@ -283,11 +287,13 @@ var renderNewCat = function () {
 var renderNewDog = function () {
   $(".new-dog").html("")
   var $newDog = $("form.new-dog")
+  $newDog.attr("id", "add-dog")
   var $newDogHdr = $("h3").text("Add a dog")
 
   $newDog.append($newDogHdr)
   $newDog.append("<input type='text' placeholder='dog name' name='newDogName' /><br>")
   $newDog.append("<input type='text' placeholder='url for image' name='newDogImg' /><br>")
+  $newDog.append("<input type='text' placeholder='happiness 1..5' name='newDogHappiness' /><br>")
   $newDog.append("<input type='text' placeholder='adopted true|false' name='newDogAdopted' /><br>")
   $newDog.append("<input type='submit' name='newDogSubmit' />")
   
