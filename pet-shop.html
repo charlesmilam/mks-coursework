@@ -100,8 +100,9 @@ $(document).on("click", "a", function (e) {
     url: host + '/shops/' + shopId + '/' + species + '/' + petId,
     type: 'PUT',
     data: {adopted: true},
+    // not needed
     dataType: "html",
-    success: function (data) {
+    success: function (data) { // data not needed
        // console.log("put data", data)
        // console.log("new adopted", $.parseJSON(data["adopted"]))
        // newAdopted = toString($.parseJSON(data["adopted"]))
@@ -116,7 +117,8 @@ $(document).on("click", "a", function (e) {
        // else {
        //  renderDogs(data)
        // }
-       $(adopted).text(data["adopted"])
+       //$(adopted).text(data["adopted"])
+       $(this).closest("div.adopted-status").text(data["adopted"])
        //$(this).parent().html(data["adopted"])
        //$(this).parent().load(data["adopted"])
     }  
@@ -249,6 +251,7 @@ var renderDogs = function (dogs) {
     var $adoptUrl = $("<a>")
     $adoptUrl.attr("href", "#")
     $adoptUrl.addClass("adopt")
+    // TODO change to data-id
     $adoptUrl.attr("id", dog.id)
     $adoptUrl.text("Adopt here")
     $dogAdopt.text(dog.adopted)
