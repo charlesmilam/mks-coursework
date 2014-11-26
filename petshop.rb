@@ -139,6 +139,37 @@ class PetshopSetup
     end
   end
 
+  # retrieve dogs for a particular shop
+  def all_dogs_for_shop shop_id
+    sql_dogs = %Q[
+      select dogs.name, happiness, adopted
+      from #{@dogs_table}
+      where shop_id = #{shop_id}
+    ]
+
+    sql_shop = %Q[
+      select *
+      from #{@shops_table}
+      where id = #{shop_id}
+    ]
+
+    #excute query for shop and output shop name as header
+    results_shop = @db.exec(sql_shop)
+    results_shop.each do |shop|
+      puts "Dogs in #{shop["name"]}:"
+      puts "===================================="
+    end
+
+    # execute query and iterate through the result set
+    results_dogs = @db.exec(sql_dogs)
+    results_dogs.each do |dog|
+      puts "Name: #{dog["name"]}"
+      puts "Happiness: #{dog["happiness"]}"
+      puts "Adopted: #{dog["adopted"]}"
+      puts "------------------------------------"
+    end
+  end
+
 end 
 
 petshop = PetshopSetup.new
@@ -147,4 +178,5 @@ petshop = PetshopSetup.new
 # petshop.populate_petshops
 # petshop.populate_cats
 # petshop.populate_dogs
-petshop.all_petshops
+#petshop.all_petshops
+petshop.all_dogs_for_shop 14
