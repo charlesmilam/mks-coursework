@@ -2,26 +2,34 @@ require "pg"
 require "json"
 require "rest-client"
 
-class Petshop
+class PetshopSetup
   def initialize
-    # make connection to database
+    # connection to database
     @db = PG::Connection.open(dbname: 'petshop')
-    @shops_table = "shops"
+    # database tables
+    @shops_table = "petshops"
     @dogs_table = "dogs"
     @cats_table = "cats"
+    # api url
+    @api = "http://pet-shop.api.mks.io/"
+    # api resources
+    @shops = "shops/"
+    @cats = "cats/"
+    @dogs = "dogs/"
+    
   end
 
   # create database tables
   def make_tables
     sql_create_petshops = %Q[
-      create table if not exists petshops
+      create table if not exists #{@shops_table}
       (id integer primary key, 
       name varchar not null
       )
     ]
 
     sql_create_cats = %Q[
-      create table if not exists cats
+      create table if not exists #{@cats_table}
       (id integer primary key, 
       name varchar not null,
       image_url varchar null,
@@ -31,7 +39,7 @@ class Petshop
     ]
 
     sql_create_dogs = %Q[
-      create table if not exists dogs
+      create table if not exists #{@dogs_table}
       (id integer primary key,
       name varchar not null,
       image_url varchar null,
@@ -46,8 +54,26 @@ class Petshop
     @db.exec(sql_create_dogs)
   end
 
+  # populate petshops table
+  def populate_petshops
+    result =  JSON.parse(RestClient.get @api + @shops)
+    
+    # prepare statement
+    statement_insert_shop = %Q[ 
+        insert into #{@shops_table}
+        (id, name)
+        values ($1, $2)
+      ]
+      @db.prepare("insert_shop", statement_insert_shop)
+
+    result.each do |shop|
+      @db.exec_prepared("insert_shop", [shop["id"], shop["name"]])
+    end
+  end
+
 end 
 
-petshop = Petshop.new
+petshop = PetshopSetup.new
 
 petshop.make_tables
+petshop.populate_petshops
