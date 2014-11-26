@@ -74,8 +74,6 @@ class PetshopSetup
 
   # populate cats table
   def populate_cats
-    result = JSON.parse(RestClient.get @api + @shops + "1/" + @cats)
-    
     # prepared statement
     statement_insert_shop = %Q[ 
         insert into #{@cats_table}
@@ -84,9 +82,18 @@ class PetshopSetup
       ]
     @db.prepare("insert_cats", statement_insert_shop)
 
-    # populate table using prepared statement  
-    result.each do |cat|
-      @db.exec_prepared("insert_cats", [cat["id"], cat["name"], cat["imageUrl"], cat["adopted"], cat["shopId"] ])
+    # query for existing shops
+    sql_shops = %Q[select * from #{@shops_table}]
+    result_shops = @db.exec(sql_shops)
+
+    # iterate through shops
+    result_shops.each do |shop|
+      result_cats = JSON.parse(RestClient.get @api + @shops + shop["id"] + "/" + @cats)
+
+      # populate table using prepared statement  
+      result_cats.each do |cat|
+        @db.exec_prepared("insert_cats", [cat["id"].to_i, cat["name"], cat["imageUrl"], cat["adopted"], cat["shopId"].to_i])
+      end
     end
   end
 
@@ -94,6 +101,6 @@ end
 
 petshop = PetshopSetup.new
 
-petshop.make_tables
-petshop.populate_petshops
+# petshop.make_tables
+# petshop.populate_petshops
 petshop.populate_cats
