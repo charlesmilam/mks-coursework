@@ -122,11 +122,29 @@ class PetshopSetup
     end
   end
 
+  # retrieve all pet shops
+  def all_petshops
+    sql = %Q[
+      select * from #{@shops_table}
+    ]
+
+    # output a header
+    puts "ID   |   Name"
+    puts "------------------------"
+
+    # execute query and iterate through the result set
+    results = @db.exec(sql)
+    results.each do |shop|
+      puts "#{shop["id"]}    |   #{shop["name"]}"
+    end
+  end
+
 end 
 
 petshop = PetshopSetup.new
 
-petshop.make_tables
-petshop.populate_petshops
-petshop.populate_cats
-petshop.populate_dogs
+# petshop.make_tables
+# petshop.populate_petshops
+# petshop.populate_cats
+# petshop.populate_dogs
+petshop.all_petshops
