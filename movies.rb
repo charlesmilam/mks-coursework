@@ -5,53 +5,49 @@ require "rest-client"
 class MoviesSetup
   def initialize
     # connection to database
-    @db = PG::Connection.open(dbname: 'petshop')
+    @db = PG::Connection.open(dbname: 'movies')
     # database tables
-    @shops_table = "petshops"
-    @dogs_table = "dogs"
-    @cats_table = "cats"
+    @movies_table = "movies"
+    @actors_table = "actors"
+    @movies_actors_table = "movies_actors"
+    @actors_movies_table = "actors_movies"
     # api url
-    @api = "http://pet-shop.api.mks.io/"
+    @api = "http://movies.api.mks.io/"
     # api resources
-    @shops = "shops/"
-    @cats = "cats/"
-    @dogs = "dogs/"
+    @movies = "movies/"
+    @actors = "actors/"
+    @movies_actors = "movies/"
+    @actors_movies = "actors/"
     
   end
 
   # create database tables
   def make_tables
-    sql_create_petshops = %Q[
-      create table if not exists #{@shops_table}
+    sql_create_tables = %Q[
+      create table if not exists #{@movies_table}
+      (id integer primary key, 
+      title varchar not null
+      );
+
+      create table if not exists #{@actors_table}
       (id integer primary key, 
       name varchar not null
-      )
-    ]
+      );
 
-    sql_create_cats = %Q[
-      create table if not exists #{@cats_table}
+      create table if not exists #{@movies_actors_table}
       (id integer primary key, 
       name varchar not null,
-      image_url varchar null,
-      adopted varchar null,
-      shop_id integer references petshops
-      )
-    ]
+      movie_id integer references #{@movies_table}
+      );
 
-    sql_create_dogs = %Q[
-      create table if not exists #{@dogs_table}
+      create table if not exists #{@actors_movies_table}
       (id integer primary key,
-      name varchar not null,
-      image_url varchar null,
-      happiness integer constraint five_or_less check (happiness <= 5),
-      adopted varchar null,
-      shop_id integer references petshops
-      )
+      title varchar not null,
+      actor_id integer references #{@movies_actors_table}
+      );
     ]
     
-    @db.exec(sql_create_petshops)
-    @db.exec(sql_create_cats)
-    @db.exec(sql_create_dogs)
+    @db.exec(sql_create_tables)
   end
 
   # populate petshops table
@@ -216,13 +212,13 @@ class MoviesSetup
 
 end 
 
-petshop = MoviesSetup.new
+movies = MoviesSetup.new
 
-# petshop.make_tables
-# petshop.populate_petshops
-# petshop.populate_cats
-# petshop.populate_dogs
-#petshop.all_petshops
-#petshop.all_dogs_for_shop 14
-#petshop.happiest_dogs
-petshop.all_pets
+movies.make_tables
+# movies.populate_petshops
+# movies.populate_cats
+# movies.populate_dogs
+#movies.all_petshops
+#movies.all_dogs_for_shop 14
+#movies.happiest_dogs
+#movies.all_pets
