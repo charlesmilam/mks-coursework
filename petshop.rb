@@ -170,6 +170,24 @@ class PetshopSetup
     end
   end
 
+  # restrieve happiest dogs
+  def happiest_dogs
+    sql = %Q[
+      select name, happiness
+      from #{@dogs_table}
+      order by happiness desc, name asc
+      limit 5
+    ]
+
+    # output a header
+    puts "Happiest Dogs:"
+    # execute query and interate over results
+    results = @db.exec(sql)
+    results.each do |dog|
+      puts "#{dog["name"]} - #{dog["happiness"]}"
+    end
+  end
+
 end 
 
 petshop = PetshopSetup.new
@@ -179,4 +197,5 @@ petshop = PetshopSetup.new
 # petshop.populate_cats
 # petshop.populate_dogs
 #petshop.all_petshops
-petshop.all_dogs_for_shop 14
+#petshop.all_dogs_for_shop 14
+petshop.happiest_dogs
