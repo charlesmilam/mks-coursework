@@ -13,27 +13,37 @@ class Petshop
 
   # create database tables
   def make_tables
-    sql_create_petshop = %Q[
-      create table if not exists petshop
-      (id serial primary key, name varchar)
+    sql_create_petshops = %Q[
+      create table if not exists petshops
+      (id integer primary key, 
+      name varchar not null
+      )
     ]
 
     sql_create_cats = %Q[
       create table if not exists cats
-      (id integer, name varchar)
+      (id integer primary key, 
+      name varchar not null,
+      image_url varchar null,
+      adopted varchar null,
+      shop_id integer references petshops
+      )
     ]
 
     sql_create_dogs = %Q[
       create table if not exists dogs
-      (id integer,
-      name varchar,
-      image_url varchar,
-      happiness integer,
-      adopted_status
+      (id integer primary key,
+      name varchar not null,
+      image_url varchar null,
+      happiness integer constraint five_or_less check (happiness <= 5),
+      adopted varchar null,
+      shop_id integer references petshops
       )
     ]
     
-    @db.exec(sql_create_table)
+    @db.exec(sql_create_petshops)
+    @db.exec(sql_create_cats)
+    @db.exec(sql_create_dogs)
   end
 
 end 
