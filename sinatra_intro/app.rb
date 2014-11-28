@@ -9,3 +9,7 @@ end
 get "/gather-info" do
   erb :info 
 end
+
+post "/info-summary" do
+  puts params
+end
