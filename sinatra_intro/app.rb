@@ -7,5 +7,5 @@ get "/time" do
 end
 
 get "/gather-info" do
-  erb :gather 
+  erb :info 
 end
