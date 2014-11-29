@@ -34,62 +34,55 @@ class MoviesSetup
       name varchar not null
       );
 
-      create table if not exists #{@movies_actors_table}
-      (id integer primary key, 
+      create table if not exists #{@actors_movies_table}
+      (id serial primary key, 
       name varchar not null,
-      movie_id integer references #{@movies_table}
+      movie_id integer references #{@movies_table} (id)
       );
 
-      create table if not exists #{@actors_movies_table}
-      (id integer primary key,
+      create table if not exists #{@movies_actors_table}
+      (id serial primary key,
       title varchar not null,
-      actor_id integer references #{@movies_actors_table}
+      actor_id integer references #{@actors_table} (id)
       );
     ]
     
     @db.exec(sql_create_tables)
   end
 
-  # populate petshops table
-  def populate_petshops
-    result =  JSON.parse(RestClient.get @api + @shops)
+  # populate movies table
+  def populate_movies
+    result =  JSON.parse(RestClient.get @api + @movies)
     
     # prepared statement
-    statement_insert_shop = %Q[ 
-        insert into #{@shops_table}
-        (id, name)
+    statement_insert_movies = %Q[ 
+        insert into #{@movies_table}
+        (id, title)
         values ($1, $2)
       ]
-    @db.prepare("insert_shops", statement_insert_shop)
+    @db.prepare("insert_movies", statement_insert_movies)
 
     # populate table using prepared statement  
-    result.each do |shop|
-      @db.exec_prepared("insert_shops", [shop["id"], shop["name"]])
+    result.each do |movie|
+      @db.exec_prepared("insert_movies", [movie["id"], movie["title"]])
     end
   end
 
-  # populate cats table
-  def populate_cats
+  # populate actors table
+  def populate_actors
+    result =  JSON.parse(RestClient.get @api + @actors)
+
     # prepared statement
-    statement_insert_shop = %Q[ 
-        insert into #{@cats_table}
-        (id, name, image_url, adopted, shop_id)
-        values ($1, $2, $3, $4, $5)
+    statement_insert_actors = %Q[ 
+        insert into #{@actors_table}
+        (id, name)
+        values ($1, $2)
       ]
-    @db.prepare("insert_cats", statement_insert_shop)
+    @db.prepare("insert_actors", statement_insert_actors)
 
-    # query for existing shops
-    sql_shops = %Q[select * from #{@shops_table}]
-    result_shops = @db.exec(sql_shops)
-
-    # iterate through shops
-    result_shops.each do |shop|
-      result_cats = JSON.parse(RestClient.get @api + @shops + shop["id"] + "/" + @cats)
-
-      # populate table using prepared statement  
-      result_cats.each do |cat|
-        @db.exec_prepared("insert_cats", [cat["id"].to_i, cat["name"], cat["imageUrl"], cat["adopted"], cat["shopId"].to_i])
-      end
+    # populate table using prepared statement  
+    result.each do |actor|
+      @db.exec_prepared("insert_actors", [actor["id"], actor["name"]])
     end
   end
 
@@ -215,8 +208,8 @@ end
 movies = MoviesSetup.new
 
 movies.make_tables
-# movies.populate_petshops
-# movies.populate_cats
+#movies.populate_movies
+#movies.populate_actors
 # movies.populate_dogs
 #movies.all_petshops
 #movies.all_dogs_for_shop 14
