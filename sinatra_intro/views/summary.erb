@@ -1,0 +1,13 @@
+<html>
+<head>
+  <title>Summary of User Information</title>
+</head>
+<body>
+  <strong>Name: <%= @name %></strong>
+  <p>Email: <%= @email %></p>
+  <% if @vegetarian %>
+    <p><%= @name %> is a vegetarian</p>
+  <% end %>
+  <p>Blood Type: <%= @blood_type %></p>
+</body>
+</html>
