@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dog Registration</title>
+</head>
+<body>
+  <form action="/results">
+    <div>
+      <label for="name">Dog Name:</label>
+      <input type="text" id="name" name="name" />
+    </div>
+    <div>
+      <label for="breed">Breed</label>
+      <input type="text" id="breed" name="breed" />
+    </div>
+    <div>
+      <label for="vaccinated">Vaccinated?</label>
+      <input type="checkbox" id="vaccinated" name="vaccinated" />
+    </div>
+    <div>
+        <label for="color">Color:</label>
+        <select name="color">
+         <option value="A">Brown</option>
+         <option value="B">Black</option>
+         <option value="AB">Blond</option>
+         <option value="O">Mixed</option>
+         <option value="nil">Unknown</option>
+       </select>
+    </div>
+    <div>
+      <input type="submit" value="Submit Info">
+    </div>
+  </form>
+</body>
+</html>
