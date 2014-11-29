@@ -2,6 +2,7 @@ require "rubygems"
 require "sinatra"
 require "pry-byebug"
 
-get "/welcome" do 
+get "/welcome/:name" do 
+  @name = params[:name]
   erb :welcome
 end
