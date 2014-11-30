@@ -170,6 +170,34 @@ class MoviesSetup
     end 
   end
 
+  # retrieve actors and count the frequency of their movie appearances
+  def actors_frequency
+    sql = %Q[
+      SELECT 
+        actors.name as actor, 
+        count(actors_movies.movie_id) as appearances
+      FROM 
+        public.actors_movies, 
+        public.actors
+      WHERE 
+        actors_movies.actor_id = actors.id
+      GROUP BY
+        actors.name
+      ORDER BY
+        actors.name ASC
+    ]
+
+    # output a header
+    puts "Actor      |       Appearances"
+    puts "______________________________"
+
+    #execut the query and iterate through the result set
+    results = @db.exec(sql)
+    results.each do |actor|
+      puts "#{actor["actor"]} | #{actor["appearances"]}"
+    end
+  end
+
 end 
 
 movies = MoviesSetup.new
@@ -179,7 +207,7 @@ movies.make_tables
 #movies.populate_actors
 #movies.populate_actors_movies
 #movies.populate_movies_actors
-movies.all_actors
-movies.all_movies
-#movies.happiest_dogs
+#movies.all_actors
+#movies.all_movies
+movies.actors_frequency
 #movies.all_pets
