@@ -134,10 +134,11 @@ class MoviesSetup
     end
   end
 
-  # retrieve all pet shops
-  def all_petshops
+  # retrieve all actors, sorted ascending
+  def all_actors
     sql = %Q[
-      select * from #{@shops_table}
+      select * from #{@actors_table}
+      order by name asc
     ]
 
     # output a header
@@ -146,85 +147,12 @@ class MoviesSetup
 
     # execute query and iterate through the result set
     results = @db.exec(sql)
-    results.each do |shop|
-      puts "#{shop["id"]}    |   #{shop["name"]}"
+    results.each do |actor|
+      puts "#{actor["id"]}    |   #{actor["name"]}"
     end
   end
 
-  # retrieve dogs for a particular shop
-  def all_dogs_for_shop shop_id
-    sql_dogs = %Q[
-      select dogs.name, happiness, adopted
-      from #{@dogs_table}
-      where shop_id = #{shop_id}
-    ]
-
-    sql_shop = %Q[
-      select *
-      from #{@shops_table}
-      where id = #{shop_id}
-    ]
-
-    #excute query for shop and output shop name as header
-    results_shop = @db.exec(sql_shop)
-    results_shop.each do |shop|
-      puts "Dogs in #{shop["name"]}:"
-      puts "===================================="
-    end
-
-    # execute query and iterate through the result set
-    results_dogs = @db.exec(sql_dogs)
-    results_dogs.each do |dog|
-      puts "Name: #{dog["name"]}"
-      puts "Happiness: #{dog["happiness"]}"
-      puts "Adopted: #{dog["adopted"]}"
-      puts "------------------------------------"
-    end
-  end
-
-  # restrieve happiest dogs
-  def happiest_dogs
-    sql = %Q[
-      select name, happiness
-      from #{@dogs_table}
-      order by happiness desc, name asc
-      limit 5
-    ]
-
-    # output a header
-    puts "Happiest Dogs:"
-    # execute query and iterate over results
-    results = @db.exec(sql)
-    results.each do |dog|
-      puts "#{dog["name"]} - #{dog["happiness"]}"
-    end
-  end
-
-  # retrieve all pets
-  def all_pets
-    sql = %Q[
-      SELECT dogs.name as pet_name, petshops.name as shop_name
-      FROM dogs  
-      JOIN petshops  
-      ON dogs.shop_id = petshops.id 
-      UNION  
-      SELECT cats.name pet_name, petshops.name as shop_name
-      FROM cats  
-      JOIN petshops  
-      ON cats.shop_id = petshops.id 
-      order by pet_name
-    ]
-
-    # output a header
-    puts "Pet Name     |  Pet Shop"
-    puts "============================"
-
-    # execute query and iterate over results
-    results = @db.exec(sql)
-    results.each do |pet|
-      puts "#{pet["pet_name"]}  |  #{pet["shop_name"]}"
-    end
-  end
+  
 
 end 
 
@@ -234,8 +162,8 @@ movies.make_tables
 #movies.populate_movies
 #movies.populate_actors
 #movies.populate_actors_movies
-movies.populate_movies_actors
-#movies.all_petshops
+#movies.populate_movies_actors
+movies.all_actors
 #movies.all_dogs_for_shop 14
 #movies.happiest_dogs
 #movies.all_pets
