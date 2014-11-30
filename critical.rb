@@ -37,29 +37,31 @@ def fave_most(movies)
     return most_fave.sort_by {|movie| movie[1].to_i}.reverse[0..2]
 end
 
-puts "Popular Movie Geners \n #{fave_most(data_movie).each {|genre| "#{genre[0] } - #{genre[1]}"}} reviews"
+puts "Popular Movie Geners \n #{fave_most(data_movie).each {|genre| "#{genre[0]} - #{genre[1]}"}} reviews"
 puts "====================================================================="
 
-# def best_rated(movies)
-#     p movies
+def best_rated(movies)
+    # p movies
 
-#     counted = Hash.new(0)
+    # counted = Hash.new(0)
 
-#     movies.each do |movie|
-#         counted[movie["genre"]] += 1
-#     end
+    # movies.each do |movie|
+    #     counted[movie["genre"]] += 1
+    # end
+    # p counted
+    rated = Hash.new(0)
+    count = 1.0
+    movies.each do |movie|
+      rated[movie["genre"]] += (movie["rating"].to_i / count)
+      count += 1
+    end
+    #p rated
 
-#     rated = Hash.new(0)
+   return rated.sort_by {|movie| movie[1].to_i}.reverse[0..2]
+end
 
-#     movies.each do |movie|
-#         rated[movie]["genre"]] += movie["rating"]
-#     end
-
-
-#    # return rated.sort_by {|movie| movie[1].to_i}.reverse[0..2]
-# end
-
-#best_rated(data_movie)
+puts " Best rated genres\n #{best_rated(data_movie)}"
+puts "=========================================================================="
 
 
 def get_cheeses(data)
