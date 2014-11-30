@@ -7,3 +7,4 @@ end
 post '/translate' do
   erb :result
 end
+
