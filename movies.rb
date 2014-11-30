@@ -35,8 +35,8 @@ class MoviesSetup
       );
 
       create table if not exists #{@actors_movies_table}
-      (id serial primary key, 
-      name varchar not null,
+      (id serial primary key,
+      actor_id integer references #{@actors_table} (id), 
       movie_id integer references #{@movies_table} (id)
       );
 
@@ -86,28 +86,27 @@ class MoviesSetup
     end
   end
 
-  # populate dogs table
-  def populate_dogs
+  # populate actors_movies table
+  def populate_actors_movies
     # prepared statement
-    statement_insert_shop = %Q[ 
-        insert into #{@dogs_table}
-        (id, name, image_url, happiness, adopted, shop_id)
-        values ($1, $2, $3, $4, $5, $6)
+    statement_insert_actors_movies = %Q[ 
+        insert into #{@actors_movies_table}
+        (actor_id, movie_id)
+        values ($1, $2)
       ]
-    @db.prepare("insert_dogs", statement_insert_shop)
+    @db.prepare("insert_actors_movies", statement_insert_actors_movies)
 
-    # query for existing shops
-    sql_shops = %Q[select * from #{@shops_table}]
-    result_shops = @db.exec(sql_shops)
+    # query for existing actors
+    sql_actors = %Q[select * from #{@actors_table}]
+    result_actors = @db.exec(sql_actors)
 
-    # iterate through shops
-    result_shops.each do |shop|
-      result_cats = JSON.parse(RestClient.get @api + @shops + shop["id"] + "/" + @dogs)
-
-      # populate table using prepared statement  
-      result_cats.each do |dog|
-        @db.exec_prepared("insert_dogs", [dog["id"].to_i, dog["name"], dog["imageUrl"], dog["happiness"].to_i, dog["adopted"], dog["shopId"].to_i])
-      end
+    # # iterate through actors
+    result_actors.each do |actor|
+      result_actors_movies = JSON.parse(RestClient.get @api + @actors + actor["id"] + "/" + @movies)
+        # iterate through actors_movies and insert into table
+        result_actors_movies.each do |actor_movie|
+         @db.exec_prepared("insert_actors_movies", [actor["id"].to_i, actor_movie["id"].to_i])
+        end
     end
   end
 
@@ -210,7 +209,7 @@ movies = MoviesSetup.new
 movies.make_tables
 #movies.populate_movies
 #movies.populate_actors
-# movies.populate_dogs
+movies.populate_actors_movies
 #movies.all_petshops
 #movies.all_dogs_for_shop 14
 #movies.happiest_dogs
