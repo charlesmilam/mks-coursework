@@ -142,17 +142,33 @@ class MoviesSetup
     ]
 
     # output a header
-    puts "ID   |   Name"
+    puts "Actors"
     puts "------------------------"
 
     # execute query and iterate through the result set
     results = @db.exec(sql)
     results.each do |actor|
-      puts "#{actor["id"]}    |   #{actor["name"]}"
+      puts "#{actor["name"]}"
     end
   end
 
-  
+  # retrieve all movies, sorted ascending
+  def all_movies
+    sql = %Q[
+      select title from #{@movies_table}
+      order by title asc
+    ]
+
+    # output a header
+    puts "Movies"
+    puts "------------------------"
+
+    # execute query and iterate through the result set
+    results = @db.exec(sql)
+    results.each do |movie|
+      puts "#{movie["title"]}"
+    end 
+  end
 
 end 
 
@@ -164,6 +180,6 @@ movies.make_tables
 #movies.populate_actors_movies
 #movies.populate_movies_actors
 movies.all_actors
-#movies.all_dogs_for_shop 14
+movies.all_movies
 #movies.happiest_dogs
 #movies.all_pets
