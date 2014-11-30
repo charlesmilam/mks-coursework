@@ -194,7 +194,37 @@ class MoviesSetup
     #execut the query and iterate through the result set
     results = @db.exec(sql)
     results.each do |actor|
-      puts "#{actor["actor"]} | #{actor["appearances"]}"
+      puts "#{actor["actor"]} | 
+      #{actor["appearances"]}"
+    end
+  end
+
+  # retrieve all movies and list actors
+  def all_movies_with_actors
+    sql = %Q[
+      SELECT 
+        movies.title as movie, 
+        actors.name as actor
+      FROM 
+        public.actors, 
+        public.movies_actors, 
+        public.movies
+      WHERE 
+        movies_actors.actor_id = actors.id AND
+        movies_actors.movie_id = movies.id
+      ORDER BY
+        movies.title ASC, 
+        actors.name ASC
+    ]
+
+    # output a header
+    puts "Movie         |  Actor"
+    puts "----------------------"
+
+    # execute the query and iterate through the results
+    results = @db.exec(sql)
+    results.each do |movie|
+      puts "#{movie["movie"]}       #{movie["actor"]}"
     end
   end
 
@@ -209,5 +239,6 @@ movies.make_tables
 #movies.populate_movies_actors
 #movies.all_actors
 #movies.all_movies
-movies.actors_frequency
+#movies.actors_frequency
+movies.all_movies_with_actors
 #movies.all_pets
