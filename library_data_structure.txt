@@ -1,0 +1,11 @@
+
+ I have a small library of books:
+Design Patterns, by John Vlissides, Richard Helm, Ralph Johnson and Erich Gamma.
+Patterns of Enterprise Application Architecture, by Martin Fowler
+Domain Driven Design, by Eric Evans
+
+library = [
+{title: "Design Patterns", author: ["John Vlissides", "Richard Helm", "Ralph Johnson", "Eric Gamma"]},
+{title: "Patterns of Enterprise Application Architecture", author: ["Martin Fowler"]},
+{title: "Domain Driven Design", author: ["Eric Evans"]}
+]
