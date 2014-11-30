@@ -200,7 +200,7 @@ class MoviesSetup
   end
 
   # retrieve all movies and list actors
-  def all_movies_with_actors movie
+  def movie_with_actors movie
     sql = %Q[
       SELECT 
         movies.title as movie, 
@@ -210,7 +210,7 @@ class MoviesSetup
         public.movies_actors, 
         public.movies
       WHERE 
-        movies.title = '#{movie}' AND
+        movies.title ILIKE '%#{movie}%' AND
         movies_actors.actor_id = actors.id AND
         movies_actors.movie_id = movies.id
       ORDER BY
@@ -241,5 +241,5 @@ movies.make_tables
 #movies.all_actors
 #movies.all_movies
 #movies.actors_frequency
-movies.all_movies_with_actors "Star Dust"
+movies.movie_with_actors "dust"
 #movies.all_pets
