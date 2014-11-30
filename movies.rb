@@ -42,7 +42,7 @@ class MoviesSetup
 
       create table if not exists #{@movies_actors_table}
       (id serial primary key,
-      title varchar not null,
+      movie_id integer references #{@movies_table} (id),
       actor_id integer references #{@actors_table} (id)
       );
     ]
@@ -106,6 +106,30 @@ class MoviesSetup
         # iterate through actors_movies and insert into table
         result_actors_movies.each do |actor_movie|
          @db.exec_prepared("insert_actors_movies", [actor["id"].to_i, actor_movie["id"].to_i])
+        end
+    end
+  end
+
+   # populate movies_actors table
+  def populate_movies_actors
+    # prepared statement
+    statement_insert_movies_actors = %Q[ 
+        insert into #{@movies_actors_table}
+        (actor_id, movie_id)
+        values ($1, $2)
+      ]
+    @db.prepare("insert_movies_actors", statement_insert_movies_actors)
+
+    # query for existing actors
+    sql_actors = %Q[select * from #{@movies_table}]
+    result_movies = @db.exec(sql_actors)
+
+    # # iterate through actors
+    result_movies.each do |movie|
+      result_movies_actors = JSON.parse(RestClient.get @api + @actors + movie["id"] + "/" + @movies)
+        # iterate through movies_actors and insert into table
+        result_movies_actors.each do |movie_actor|
+         @db.exec_prepared("insert_movies_actors", [movie["id"].to_i, movie_actor["id"].to_i])
         end
     end
   end
@@ -209,7 +233,8 @@ movies = MoviesSetup.new
 movies.make_tables
 #movies.populate_movies
 #movies.populate_actors
-movies.populate_actors_movies
+#movies.populate_actors_movies
+movies.populate_movies_actors
 #movies.all_petshops
 #movies.all_dogs_for_shop 14
 #movies.happiest_dogs
