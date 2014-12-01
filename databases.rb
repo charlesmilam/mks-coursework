@@ -3,7 +3,8 @@ require "pg"
 class Classmates
 
   # make connection to database
-  db = PG::Connection.open(dbname: 'mks')
+  def initialize
+    @db = PG::Connection.open(dbname: 'mks')
 
   # table being used
   tbl = "classmates"
