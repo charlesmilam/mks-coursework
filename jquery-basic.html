@@ -85,7 +85,6 @@
         var li = $('<li>')
         var str = $("<strong>")
         li.text(r.rating + " - " + r.venue)
-        //str.txt(r.rating)
         ol.append(li)
       })
     }
@@ -127,6 +126,7 @@
     }
     return temp_obj;
   };
+  // end of sort obj
 
   var mostReviews = {};
   reviews.forEach(function(r) {
