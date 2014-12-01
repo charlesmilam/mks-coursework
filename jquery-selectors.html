@@ -81,18 +81,6 @@ $.get("http://critics.api.mks.io/movie-genres", function (reviews) {
       mostReviews[r.genre] += 1;
   });
 
-  var sortThis = [];
-
-  for (var genre in mostReviews) {
-    sortThis.push([genre, mostReviews[genre]]);
-  }
-  sortThis.sort(function(a, b) {return a[1] - b[1]}).reverse()
-
-  //console.log("Top Movie Genres ")
-  for (var i = 0; i < 3; i++ ) {
-   //console.log(sortThis[i][0] + " - " + sortThis[i][1])
-  };
-
   //console.log("Sort this", sortThis)
   console.log("Most reviews", mostReviews);
 
