@@ -181,10 +181,36 @@ class PetshopSetup
 
     # output a header
     puts "Happiest Dogs:"
-    # execute query and interate over results
+    # execute query and iterate over results
     results = @db.exec(sql)
     results.each do |dog|
       puts "#{dog["name"]} - #{dog["happiness"]}"
+    end
+  end
+
+  # retrieve all pets
+  def all_pets
+    sql = %Q[
+      SELECT dogs.name as pet_name, petshops.name as shop_name
+      FROM dogs  
+      JOIN petshops  
+      ON dogs.shop_id = petshops.id 
+      UNION  
+      SELECT cats.name pet_name, petshops.name as shop_name
+      FROM cats  
+      JOIN petshops  
+      ON cats.shop_id = petshops.id 
+      order by pet_name
+    ]
+
+    # output a header
+    puts "Pet Name     |  Pet Shop"
+    puts "============================"
+
+    # execute query and iterate over results
+    results = @db.exec(sql)
+    results.each do |pet|
+      puts "#{pet["pet_name"]}  |  #{pet["shop_name"]}"
     end
   end
 
@@ -198,4 +224,5 @@ petshop = PetshopSetup.new
 # petshop.populate_dogs
 #petshop.all_petshops
 #petshop.all_dogs_for_shop 14
-petshop.happiest_dogs
+#petshop.happiest_dogs
+petshop.all_pets
