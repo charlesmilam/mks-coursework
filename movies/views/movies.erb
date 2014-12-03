@@ -1,0 +1,6 @@
+<h3><%= @movie_result["title"] %></h3>
+<ul>
+  <% @actors_result.each do |actor|%>
+    <li><%= actor["name"]%></li>
+  <% end %>
+</ul>
