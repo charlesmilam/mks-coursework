@@ -3,6 +3,7 @@ require "json"
 require "rest-client"
 
 api = "http://movies.api.mks.io/movies/"
+api_actors = "http://movies.api.mks.io/actors/"
 
 get '/' do
   @index_results = JSON.parse(RestClient.get api)
@@ -20,5 +21,5 @@ get '/movies/:id' do
 end
 
 get "/actors/:id/movies"
-
+  @actor_result = JSON.parse(RestClient.get api + params["id"] + "/actors")
 end
