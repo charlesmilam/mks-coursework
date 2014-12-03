@@ -18,3 +18,7 @@ get '/movies/:id' do
   @actors_result.each {|actor| puts actor}
   erb :"movies"
 end
+
+get "/actors/:id/movies"
+
+end
