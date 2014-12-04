@@ -13,14 +13,13 @@ end
 get '/movies/:id' do
   @movie_result = JSON.parse(RestClient.get api + params["id"])
   @actors_result = JSON.parse(RestClient.get api + params["id"] + "/actors")
-  @movie_result.each {|movie| puts movie}
-  @actors_result.each {|actor| puts actor}
+
   erb :"movies"
 end
 
-get "/actors/:id" do
-  puts params
+get '/actors/:id' do
   @actor_result = JSON.parse(RestClient.get api_actors + params["id"] + "/movies")
   @actor_name = JSON.parse(RestClient.get api_actors + params["id"])
-  puts @actor_result
+  
+  erb :"actors"
 end
