@@ -1,0 +1,10 @@
+<div style="width: 50%; margin: auto;">
+  <h2>Airlines Number of Delays</h2>
+</div>
+<div style="width: 50%; margin: auto;">
+  <p> <% @content.each do |airline| %>
+        Carrier: <%= airline["carrier"] %>&nbsp;&nbsp;&nbsp;
+        Delays: <%= airline["delays"] %><br>
+      <% end %>
+  </p>
+</div>
