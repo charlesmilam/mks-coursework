@@ -46,9 +46,36 @@ module OntimeDB
     return results
   end
 
+  def self.city_depart_delays
+    results = []
+    sql_most = %Q[
+      select origin_city_name, count(dep_delay_new) as delays
+      from on_time_perf
+      where dep_delay_new > 0
+      group by origin_city_name
+      order by delays desc
+      limit 1
+    ]
+
+    sql_least = %Q[
+      select origin_city_name, count(dep_delay_new) as delays
+      from on_time_perf
+      where dep_delay_new > 0
+      group by origin_city_name
+      order by delays asc
+      limit 1
+    ]
+
+    data = @db.exec sql_most
+    results << data.first
+    data = @db.exec sql_least
+    results << data.first
+    results
+  end
+
 end
 
-#result = OntimeDB.arrival_delays
+#result = OntimeDB.city_depart_delays
 
 # result.each {|airline| puts airline["carrier"]}
 #p result
