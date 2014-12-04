@@ -1,6 +1,6 @@
 <h3><%= @actor_name["name"] %></h3>
 <ul>
   <% @actor_result.each do |movie| %>
-    <li><%= movie["title"] %></li>
+    <li><a href="/movies/<%= movie["id"] %>"><%= movie["title"] %></a></li>
   <% end %> 
 </ul>
