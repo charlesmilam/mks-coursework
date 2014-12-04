@@ -7,7 +7,7 @@ module OntimeDB
   @movies_table = "on_time_perf"
 
   def self.airlines
-    sql = %[
+    sql = %Q[
       select carrier, count(dep_delay_new) + count(arr_delay_new) as delays
       from on_time_perf
       where arr_delay_new > 0
@@ -18,8 +18,37 @@ module OntimeDB
 
     @db.exec sql
   end
+
+  def self.arrival_delays
+    results = []
+    sql_most = %Q[
+      select carrier, avg(arr_delay_new) as delays
+      from on_time_perf
+      where arr_delay_new > 0
+      group by carrier
+      order by delays desc
+      limit 1
+    ]
+
+    sql_least = %Q[
+      select carrier, avg(arr_delay_new) as delays
+      from on_time_perf
+      where arr_delay_new > 0
+      group by carrier
+      order by delays asc
+      limit 1
+    ]
+
+    most = @db.exec sql_most
+    results << most.first
+    least = @db.exec sql_least
+    results << least.first
+    return results
+  end
+
 end
 
-# result = OntimeDB.airlines
+#result = OntimeDB.arrival_delays
 
 # result.each {|airline| puts airline["carrier"]}
+#p result
