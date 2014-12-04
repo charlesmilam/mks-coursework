@@ -24,3 +24,15 @@ get "/city_depart_delays" do
 
   erb :city_depart_delays
 end
+
+get "/city_arrv_delays" do
+  @content = OntimeDB.city_arrv_delays
+
+  erb :city_arrv_delays
+end
+
+get "/avg_delay_all" do
+  @content = OntimeDB.avg_delay_all
+
+  erb :avg_delay_all
+end
