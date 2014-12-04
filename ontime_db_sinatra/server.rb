@@ -36,3 +36,9 @@ get "/avg_delay_all" do
 
   erb :avg_delay_all
 end
+
+get "/airline_avg_delay" do
+  @content = OntimeDB.airline_avg_delay
+
+  erb :airline_avg_delay
+end
