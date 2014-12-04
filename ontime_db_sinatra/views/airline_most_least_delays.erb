@@ -1,0 +1,13 @@
+<div style="width: 50%; margin: auto;">
+  <h2>Airline with Most Delays</h2>
+</div>
+<div style="width: 50%; margin: auto;">
+  <h3> Carrier: <%= @content.first["carrier"]%> <br>Average Delays: <%= @content.first["delays"] %></h3>
+</div>
+<br><br><br>
+<div style="width: 50%; margin: auto;">
+  <h2>Airline with Least Delays</h2>
+</div>
+<div style="width: 50%; margin: auto;">
+   <h3> Carrier: <%= @content.last["carrier"]%> <br>Average Delays: <%= @content.last["delays"] %></h3>
+</div>
