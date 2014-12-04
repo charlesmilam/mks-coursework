@@ -12,3 +12,9 @@ get "/airlines" do
 
   erb :airlines
 end
+
+get "/airline_most_least_delays" do
+  @content = OntimeDB.arrival_delays
+
+  erb :airline_most_least_delays
+end
