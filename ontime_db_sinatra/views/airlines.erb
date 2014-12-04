@@ -2,5 +2,8 @@
   <h2>Airlines Represented in Dataset</h2>
 </div>
 <div style="width: 50%; margin: auto;">
-  <p><%= @content %></p>
+  <p> <% @content.each do |airline| %>
+        <%= airline["carrier"] %><br>
+      <% end %>
+  </p>
 </div>
