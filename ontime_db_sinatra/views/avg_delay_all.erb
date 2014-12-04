@@ -1,0 +1,12 @@
+<div style="width: 50%; margin: auto;">
+  <h2>Average Delay Time (minutes) Across All Airlines</h2>
+</div>
+<div style="width: 50%; margin: auto;">
+  <p>
+    <h3>
+      <% @content.each do |delay| %>
+        <%= delay["delays"] %><br>
+      <% end %>
+    </h3>
+  </p>
+</div>
