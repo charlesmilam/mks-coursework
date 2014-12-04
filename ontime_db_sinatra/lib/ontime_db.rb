@@ -115,9 +115,23 @@ module OntimeDB
     @db.exec sql
   end
 
+  def self.airline_avg_delay
+    results = []
+
+    sql = %Q[
+      select carrier, count(*) as delays
+      from on_time_perf
+      where arr_delay_new > 0
+      or dep_delay_new > 0
+      group by carrier
+      order by delays desc
+    ]
+
+    @db.exec sql
+  end
 end
 
-# result = OntimeDB.avg_late_all
+# result = OntimeDB.airline_avg_delay
 
 # result.each {|airline| puts airline}
 #p result[""]
