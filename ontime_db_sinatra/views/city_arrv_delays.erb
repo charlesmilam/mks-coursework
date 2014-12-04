@@ -1,0 +1,13 @@
+<div style="width: 50%; margin: auto;">
+  <h2>City with Most Delays - Arrivals</h2>
+</div>
+<div style="width: 50%; margin: auto;">
+  <h3> City: <%= @content.first["origin_city_name"]%> <br>Delays: <%= @content.first["delays"] %></h3>
+</div>
+<br><br><br>
+<div style="width: 50%; margin: auto;">
+  <h2>City with Least Delays - Arrivals</h2>
+</div>
+<div style="width: 50%; margin: auto;">
+   <h3> City: <%= @content.last["origin_city_name"]%> <br>Delays: <%= @content.last["delays"] %></h3>
+</div>
