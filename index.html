@@ -8,11 +8,35 @@
   <!-- view -->
   <h1>Taargus Taargus</h1>
 
+  <div class="user-container">
+    <label>User Name: </label>
+    <input type="text" placeholder="Enter name here" name="quiz-user" />
+  </div>
+
   <div class="quiz-container">
     <form id="quiz-form">
       <div class="quiz-question"></div>
       <div class="quiz-responses"></div>
+      <input type='submit' name='quiz-submit' value='Answer Me' />
     </form>
+  </div>
+
+  <div class="quiz-stats">
+    <div class="question-avg">
+      <div class="question1">
+        <label id="question1-label">Average Score of ? 1: </label>
+        <label id="question1-avg"></label>
+      </div>
+      <div class="question2">
+        <label id="question2-label">Average Score of ? 2: </label>
+        <label id="question2-avg"></label>  
+      </div>
+      <div class="hi-score">
+        <label id="hi-score-name-label">High Score: </label>
+        <label id="hi-score-name"></label>
+        <label id="hi-score-score"></label>
+      </div>
+    </div>
   </div>
 
   <!-- language extensions -->

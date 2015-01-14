@@ -30,6 +30,8 @@
     // console.log($('input[name=quiz-response]:checked').val())
     // console.log($("input[name=quizId").val())
     var responses = []
+    var quizUser = $("input[name=quiz-user").val()
+    console.log(quizUser)
     //$("input[type=text]")
     $("input[type=radio]").each (function(elem) {
       // console.log(this.name)
@@ -43,9 +45,13 @@
       }
     })
     console.log(responses)
-    var correct
-    correct = Quiz.checkAnswers(responses)
-    alert("You got " + correct + " correct")
+    
+    var stats = Quiz.checkAnswers(quizUser, responses)
+    alert("You got " + stats["correct"] + " correct")
+    $("#question1-avg").text(stats["avgQ1"])
+    $("#hi-score-name").text(stats["highName"])
+    $("#hi-score-score").text(stats["highScore"])
+
   })
 
   // $("#quiz-form").on("click", "input[type=radio]", function() {
