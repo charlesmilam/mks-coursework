@@ -38,5 +38,11 @@
     })
   }
 
+  $("#quiz-form").on("click", "input[type=button", function(e) {
+    e.preventDefault()
+
+
+  })
+
 
 }) ()
