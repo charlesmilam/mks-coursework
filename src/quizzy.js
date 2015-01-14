@@ -21,6 +21,8 @@
   var _highScoreName 
   var _q1Avg = []
   var _q2Avg = []
+  var _avgQ1 = 0
+  var _avgQ2 = 0
 
   // Public 
   window.Quiz = {}
@@ -50,21 +52,29 @@
         if ((answer.id == response.id)  && (answer.answer == response.response)) {
           console.log("in correct")
           correct += 1
-          if (response.id === 1) {
-            _q1Avg = correct
+          if (response.id == 1) {
+            _q1Avg.push(correct)
           }
           else {
-            _q2Avg = correct
+            _q2Avg.push(correct)
           }
+        }
+        else {
+          if (response.id == 1) {
+            _q1Avg.push(0)
+          }
+          else {
+            _q2Avg.push(0)
+          } 
         }
       })
     })
     console.log(correct)
-    if (_q1Avg.length) {
+    if (_q1Avg.length > 0) {
       var sumQ1 = _q1Avg.reduce(function(a, b) { return a + b });
-      var avgQ1 = sumQ1 / _q1Avg.length;
+      _avgQ1 = sumQ1 / _q1Avg.length;
       console.log("q1 avg")
-      console.log(avgQ1)
+      console.log(_avgQ1)
     }
     
     if (correct > _highScore) {
@@ -72,14 +82,15 @@
       _highScoreName = quizUser
       console.log(_highScore)
       console.log(_highScoreName)
-    };
+    }
     stats = {
       correct: correct,
       highScore: _highScore,
       highName: _highScoreName,
-      avgQ1: avgQ1
+      avgQ1: _avgQ1
     }
     console.log(stats)
+    console.log(_q1Avg)
     return stats
   }
 
