@@ -4,9 +4,9 @@
   
   function renderQuizzes () {
     Quiz.forEach(function(quiz) {
-      var quizId = $("<input type='text' name='quizId'>").val(quiz.id)
+      //var quizId = $("<input type='text' name='quizId'>").val(quiz.id)
       var question = $("<h3>").text(quiz.question)
-      $(".quiz-question").append(quizId)
+      //$(".quiz-question").append(quizId)
       $(".quiz-question").append(question)
     
     
@@ -29,21 +29,21 @@
     e.preventDefault()
     // console.log($('input[name=quiz-response]:checked').val())
     // console.log($("input[name=quizId").val())
-    var answers = []
+    var responses = []
     //$("input[type=text]")
     $("input[type=radio]").each (function(elem) {
       // console.log(this.name)
       // console.log(this.checked)
       if (this.checked) {
-        var answer = {}
-        answer["id"] =  this.name
-        answer["response"] = this.value
-        console.log(answer)
-        answers.push(answer)
+        var respsonse = {}
+        respsonse["id"] =  this.name
+        respsonse["response"] = this.value
+        console.log(respsonse)
+        responses.push(respsonse)
       }
     })
-    console.log(answers)
-    Quiz.checkAnswers(answers)
+    console.log(responses)
+    Quiz.checkAnswers(responses)
   })
 
   // $("#quiz-form").on("click", "input[type=radio]", function() {
