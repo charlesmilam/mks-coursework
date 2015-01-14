@@ -43,7 +43,9 @@
       }
     })
     console.log(responses)
-    Quiz.checkAnswers(responses)
+    var correct
+    correct = Quiz.checkAnswers(responses)
+    alert("You got " + correct + " correct")
   })
 
   // $("#quiz-form").on("click", "input[type=radio]", function() {
