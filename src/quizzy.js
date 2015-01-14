@@ -26,8 +26,27 @@
     }
   }
 
-  Quiz.checkAnswers = function (quizId, response) {
+  Quiz.checkAnswers = function (responses) {
     console.log("in checkAnswer")
+    var correct = 0
+    responses.forEach(function (response) {
+      _quizzes.forEach(function (answer) {
+        console.log("ans id")
+        console.log(answer.id)
+        console.log("resp id")
+        console.log(response.id)
+        console.log("ans")
+        console.log(answer.answer)
+        console.log("resp")
+        console.log(response.response)
+        if ((answer.id == response.id)  && (answer.answer == response.response)) {
+          console.log("in correct")
+          correct += 1
+        }
+      })
+    })
+    console.log(correct)
+    return correct
   }
 
 
