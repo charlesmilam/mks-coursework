@@ -26,5 +26,9 @@
     }
   }
 
+  Quiz.checkAnswers = function (quizId, response) {
+    console.log("in checkAnswer")
+  }
+
 
 })()
