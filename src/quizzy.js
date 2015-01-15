@@ -59,7 +59,7 @@
             _q2Avg.push(correct)
           }
         }
-        else {
+        else if ((answer.id == response.id)  && (answer.answer != response.response)) {
           if (response.id == 1) {
             _q1Avg.push(0)
           }
@@ -72,9 +72,16 @@
     console.log(correct)
     if (_q1Avg.length > 0) {
       var sumQ1 = _q1Avg.reduce(function(a, b) { return a + b });
-      _avgQ1 = sumQ1 / _q1Avg.length;
-      console.log("q1 avg")
-      console.log(_avgQ1)
+      _avgQ1 = (sumQ1 / _q1Avg.length);
+      console.log("q1 sum")
+      console.log(sumQ1)
+    }
+
+    if (_q2Avg.length > 0) {
+      var sumQ2 = _q2Avg.reduce(function(a, b) { if(a === 1) {return a + b} });
+      _avgQ2 = (sumQ2 / _q2Avg.length);
+      console.log("q2 avg")
+      console.log(_avgQ2)
     }
     
     if (correct > _highScore) {
@@ -87,7 +94,8 @@
       correct: correct,
       highScore: _highScore,
       highName: _highScoreName,
-      avgQ1: _avgQ1
+      avgQ1: _avgQ1,
+      avgQ2: _avgQ2
     }
     console.log(stats)
     console.log(_q1Avg)

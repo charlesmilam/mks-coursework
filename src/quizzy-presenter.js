@@ -49,6 +49,7 @@
     var stats = Quiz.checkAnswers(quizUser, responses)
     alert("You got " + stats["correct"] + " correct")
     $("#question1-avg").text(stats["avgQ1"])
+    $("#question2-avg").text(stats["avgQ2"])
     $("#hi-score-name").text(stats["highName"])
     $("#hi-score-score").text(stats["highScore"])
 
