@@ -32,16 +32,17 @@ a_recipe = [
   ]
 ]
 
-# recipes = []
-# recipe = {}
-# first = 1
+recipes = []
+recipe = {}
+first = 1
 
-# file = File.new("recipes.txt")
+file = File.new("recipes.txt")
 
-# file.each_line do |line|
-#   puts line
-#   if first
-#     recipes[]
-# end
+file.each_line do |line|
+  puts line
+  if first
+    # recipes[]
+  end
+end
 
 
