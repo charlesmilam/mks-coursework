@@ -5,7 +5,7 @@ class Classmates
   # make connection to database
   def initialize
     @db = PG::Connection.open(dbname: 'mks')
-
+  end
   # table being used
   tbl = "classmates"
 
@@ -66,12 +66,12 @@ class Classmates
   end
 end
 
-# # basic query to db
-# select_all = "select * from #{tbl}"#
-# result = db.exec(select_all)
+# basic query to db
+select_all = "select * from #{tbl}"#
+result = db.exec(select_all)
 
-# # output results of result set
-# result.each {|rec| puts rec}
+# output results of result set
+result.each {|rec| puts rec}
 
 puts "Add new classmate"
 add_new_classmate(db, tbl)
