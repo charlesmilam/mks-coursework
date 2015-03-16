@@ -1,7 +1,7 @@
 counter = 0
 library = []
 
-IO.foreach("library.txt") do |line| 
+IO.foreach("library_data_structure.txt") do |line| 
   if line[0] == "{"
     library[counter] = line.chomp
   end
