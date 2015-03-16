@@ -81,7 +81,7 @@ blog.show_post("19685")
 puts blog.create_post("Scruffy Bitwrangler", "Test Post", "This is a test post. And only a test post.")
 puts blog.edit_post("19829", {:name => "Scruffy Bitwrangler", :title => "Test Post Edited", :content => "This is a test post. And only a test post. Yes, there are a bunch of them."})
 
-blog.delete_post("19842")
+# blog.delete_post("19842")
 
 
 
